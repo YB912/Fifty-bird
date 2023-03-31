@@ -6,20 +6,19 @@ local LEFT_GAP = 4
 local RIGHT_BOTTOM_GAP = 1
 local TOP_GAP = 3
 
+BIRD_WIDTH = BIRD_IMAGE:getWidth()
+BIRD_HEIGHT = BIRD_IMAGE:getHeight()
+
 function Bird:init()
-
-    self.width = BIRD_IMAGE:getWidth()
-    self.height = BIRD_IMAGE:getHeight()
-
-    self.x = VIRTUAL_WIDTH / 2 - (self.width / 2)
-    self.y = VIRTUAL_HEIGHT / 2 - (self.height / 2)
+    self.x = VIRTUAL_WIDTH / 2 - (BIRD_WIDTH / 2)
+    self.y = VIRTUAL_HEIGHT / 2 - (BIRD_HEIGHT / 2)
 
     self.dy = 0
 end
 
 function Bird:collides(tree)
-    if (self.x + LEFT_GAP) <= (tree.x + tree.width) and (self.x + self.width - RIGHT_BOTTOM_GAP) >= (tree.x) and
-        (self.y + TOP_GAP) <= (tree.y + tree.height) and (self.y + self.height - RIGHT_BOTTOM_GAP) >= (tree.y) then
+    if (self.x + LEFT_GAP) <= (tree.x + tree.width) and (self.x + BIRD_WIDTH - RIGHT_BOTTOM_GAP) >= (tree.x) and
+        (self.y + TOP_GAP) <= (tree.y + tree.height) and (self.y + BIRD_HEIGHT - RIGHT_BOTTOM_GAP) >= (tree.y) then
         return true
     end
     return false

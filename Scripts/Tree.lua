@@ -1,7 +1,7 @@
 Tree = Class {}
 
-TREE_WIDTH = 32
-TREE_HEIGHT = 288
+TREE_WIDTH = 30
+TREE_HEIGHT = 287
 TREE_SCROLL_SPEED = 60
 
 local TREE_IMAGE = love.graphics.newImage('Assets/Images/Tree.png')

@@ -3,6 +3,12 @@ Class = require 'Libraries/class'
 require 'Scripts/Bird'
 require 'Scripts/Tree'
 require 'Scripts/TreePair'
+require 'Scripts/StateMachine'
+require 'Scripts/States/BaseState'
+require 'Scripts.States.TitleScreenState'
+require 'Scripts.States.PlayState'
+require 'Scripts.States.ScoreState'
+require 'Scripts.States.CountdownState'
 
 WINDOW_WIDTH = 1408
 WINDOW_HEIGHT = 792
@@ -22,14 +28,6 @@ local GROUND_SCROLL_SPEED = 60
 local BACKGROUND_LOOPING_POINT = 640
 local GROUND_LOOPING_POINT = 24
 
-local bird = Bird()
-
-local treePairs = {}
-
-local treeSpawnTimer = 0
-
-local lastY = -TREE_HEIGHT + math.random(80) + 20
-
 local scrolling = true
 
 function love.load()
@@ -37,11 +35,33 @@ function love.load()
 
     love.window.setTitle('Fifty bird')
 
+    --smallFont = love.graphics.newFont('Assets/Fonts/font.ttf', 8)
+    mediumFont = love.graphics.newFont('Assets/Fonts/font.ttf', 8)
+    titleFont = love.graphics.newFont('Assets/Fonts/font.ttf', 16)
+    largeFont = love.graphics.newFont('Assets/Fonts/font.ttf', 32)
+    love.graphics.setFont(titleFont)
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
         resizable = true
     })
+
+    gStateMachine = StateMachine {
+        ['title'] = function()
+            return TitleScreenState()
+        end,
+        ['play'] = function()
+            return PlayState()
+        end,
+        ['score'] = function()
+            return ScoreState()
+        end,
+        ['countdown'] = function()
+            return CountdownState()
+        end
+    }
+    gStateMachine:change('title')
 
     love.keyboard.keysPressed = {}
 end
@@ -66,45 +86,11 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-    if scrolling then
-        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
 
-        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
+    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
 
-        treeSpawnTimer = treeSpawnTimer + dt
-
-        if treeSpawnTimer > 2 then
-            local y = math.max(-TREE_HEIGHT + 10,
-                math.min(lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - TREE_HEIGHT))
-            lastY = y
-
-            table.insert(treePairs, TreePair(y))
-            treeSpawnTimer = 0
-        end
-
-        bird:update(dt)
-
-        for k, treePair in pairs(treePairs) do
-            treePair:update(dt)
-
-            for l, tree in pairs(treePair.trees) do
-                if bird:collides(tree) then
-                    scrolling = false
-                end
-            end
-
-            if treePair.x < -TREE_WIDTH then
-                treePair.remove = true
-            end
-        end
-
-        for k, treePair in pairs(treePairs) do
-            if treePair.remove then
-                table.remove(treePairs, k)
-            end
-        end
-
-    end
+    gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}
 end
@@ -114,13 +100,9 @@ function love.draw()
 
     love.graphics.draw(background, -backgroundScroll, -2)
 
-    for k, treePair in pairs(treePairs) do
-        treePair:render()
-    end
+    gStateMachine:render()
 
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
-
-    bird:render()
 
     push:finish()
 end
