@@ -16,19 +16,26 @@ WINDOW_HEIGHT = 792
 VIRTUAL_WIDTH = 352
 VIRTUAL_HEIGHT = 198
 
-local background = love.graphics.newImage('Assets/Images/Background.png')
-local ground = love.graphics.newImage('Assets/Images/Ground.png')
+local background0 = love.graphics.newImage('Assets/Images/Background0.png')
+local background1 = love.graphics.newImage('Assets/Images/Background1.png')
+local background2 = love.graphics.newImage('Assets/Images/Background2.png')
+local background3 = love.graphics.newImage('Assets/Images/Background3.png')
+local foreground = love.graphics.newImage('Assets/Images/Foreground.png')
 
-local backgroundScroll = 0
-local groundScroll = 0
+local background0Scroll = 0
+local background1Scroll = 0
+local background2Scroll = 0
+local background3Scroll = 0
+local foregroundScroll = 0
 
-local BACKGROUND_SCROLL_SPEED = 30
-local GROUND_SCROLL_SPEED = 60
+local BACKGROUND0_SCROLL_SPEED = 5
+local BACKGROUND1_SCROLL_SPEED = 15
+local BACKGROUND2_SCROLL_SPEED = 30
+local BACKGROUND3_SCROLL_SPEED = 45
+local FOREGROUND_SCROLL_SPEED = 80
 
 local BACKGROUND_LOOPING_POINT = 640
-local GROUND_LOOPING_POINT = 24
-
-local scrolling = true
+local FOREGROUND_LOOPING_POINT = 2560
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -56,7 +63,7 @@ function love.load()
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
-        resizable = true
+        resizable = false
     })
 
     gStateMachine = StateMachine {
@@ -78,10 +85,6 @@ function love.load()
     love.keyboard.keysPressed = {}
 end
 
-function love.resize(w, h)
-    push.resize(w, h)
-end
-
 function love.keyboard.wasPressed(key)
     if love.keyboard.keysPressed[key] then
         return true
@@ -98,9 +101,11 @@ function love.keypressed(key)
 end
 
 function love.update(dt)
-    backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-
-    groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % GROUND_LOOPING_POINT
+    background0Scroll = (background0Scroll + BACKGROUND0_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    background1Scroll = (background1Scroll + BACKGROUND1_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    background2Scroll = (background2Scroll + BACKGROUND2_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    background3Scroll = (background3Scroll + BACKGROUND3_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    foregroundScroll = (foregroundScroll + FOREGROUND_SCROLL_SPEED * dt) % FOREGROUND_LOOPING_POINT
 
     gStateMachine:update(dt)
 
@@ -109,12 +114,16 @@ end
 
 function love.draw()
     push:start()
+    
 
-    love.graphics.draw(background, -backgroundScroll, -2)
+    love.graphics.draw(background0, math.ceil(-background0Scroll), 0)
+    love.graphics.draw(background1, math.ceil(-background1Scroll), 0)
+    love.graphics.draw(background2, math.ceil(-background2Scroll), 0)
+    love.graphics.draw(background3, math.ceil(-background3Scroll), 0)
 
     gStateMachine:render()
 
-    love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
-
+    love.graphics.draw(foreground, math.ceil(-foregroundScroll) + 100, 0)
     push:finish()
+    
 end
