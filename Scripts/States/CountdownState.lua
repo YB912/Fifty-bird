@@ -9,6 +9,10 @@ function CountdownState:init()
     self.timer = 0
 end
 
+function CountdownState:enter()
+    sounds['countdown']:play()
+end
+
 function CountdownState:update(dt)
     self.timer = self.timer + dt
     if self.timer > COUNTDOWN_TIME then
@@ -16,7 +20,10 @@ function CountdownState:update(dt)
         self.count = self.count - 1
         if self.count == 0 then
             gStateMachine:change('play')
+            sounds['start']:play()
+            return
         end
+        sounds['countdown']:play()
     end
 end
 

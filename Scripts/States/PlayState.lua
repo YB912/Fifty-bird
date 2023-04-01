@@ -14,7 +14,7 @@ function PlayState:update(dt)
     self.treeSpawnTimer = self.treeSpawnTimer + dt
     if self.treeSpawnTimer > 2 then
         local y = math.max(-TREE_HEIGHT + 10,
-            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - TREE_HEIGHT))
+            math.min(self.lastY + math.random(-30, 30), VIRTUAL_HEIGHT - 90 - TREE_HEIGHT))
         self.lastY = y
 
         table.insert(self.treePairs, TreePair(y))
@@ -26,6 +26,7 @@ function PlayState:update(dt)
             if treePair.x + TREE_WIDTH < self.bird.x then
                 self.score = self.score + 1
                 treePair.scored = true
+                sounds['score']:play()
             end
         end
         treePair:update(dt)
@@ -45,6 +46,8 @@ function PlayState:update(dt)
                 gStateMachine:change('score', {
                     score = self.score
                 })
+                sounds['explosion']:play()
+                sounds['hurt']:play()
             end
         end
     end
@@ -53,6 +56,8 @@ function PlayState:update(dt)
         gStateMachine:change('score', {
             score = self.score
         })
+        sounds['explosion']:play()
+        sounds['hurt']:play()
     end
 end
 

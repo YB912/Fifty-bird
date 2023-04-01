@@ -1,6 +1,6 @@
 TreePair = Class {}
 
-local GAP_HEIGHT = 50
+local GAP_HEIGHT = 40
 local GAP_IMAGE = love.graphics.newImage('Assets/Images/TreeGap.png')
 
 function TreePair:init(y)

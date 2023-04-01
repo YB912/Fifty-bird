@@ -35,11 +35,23 @@ function love.load()
 
     love.window.setTitle('Fifty bird')
 
-    --smallFont = love.graphics.newFont('Assets/Fonts/font.ttf', 8)
     mediumFont = love.graphics.newFont('Assets/Fonts/font.ttf', 8)
     titleFont = love.graphics.newFont('Assets/Fonts/font.ttf', 16)
     largeFont = love.graphics.newFont('Assets/Fonts/font.ttf', 32)
     love.graphics.setFont(titleFont)
+
+    sounds = {
+        ['jump'] = love.audio.newSource('Assets/Audio/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('Assets/Audio/explosion.wav', 'static'),
+        ['hurt'] = love.audio.newSource('Assets/Audio/hurt.wav', 'static'),
+        ['score'] = love.audio.newSource('Assets/Audio/score.wav', 'static'),
+        ['countdown'] = love.audio.newSource('Assets/Audio/countdown.wav', 'static'),
+        ['start'] = love.audio.newSource('Assets/Audio/start.wav', 'static'),
+        ['ambient'] = love.audio.newSource('Assets/Audio/forestAmbient.mp3', 'static')
+    }
+
+    sounds['ambient']:setLooping(true)
+    sounds['ambient']:play()
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
