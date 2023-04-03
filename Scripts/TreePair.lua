@@ -1,5 +1,6 @@
 TreePair = Class {}
 
+-- Increasing this variable will make the game easier (need to adjust the gap texture accordingly)
 local GAP_HEIGHT = 40
 local GAP_IMAGE = love.graphics.newImage('Assets/Images/TreeGap.png')
 
@@ -20,7 +21,7 @@ function TreePair:update(dt)
         self.trees['upper'].x = self.x
         self.trees['lower'].x = self.x
     else
-        self.remove = true
+        self.remove = true -- Make the pair ready for despawning if it passes the whole screen
     end
 end
 

@@ -2,6 +2,7 @@ Bird = Class {}
 local GRAVITY = 15
 local FLYAMOUNT = 3
 local BIRD_IMAGE = love.graphics.newImage('/Assets/Images/Bird.png')
+-- Some gaps for making the bird's collider a bit smaller
 local LEFT_GAP = 4
 local RIGHT_BOTTOM_GAP = 1
 local TOP_GAP = 3
@@ -16,6 +17,7 @@ function Bird:init()
     self.dy = 0
 end
 
+-- AA-BB collision detection algorithm
 function Bird:collides(tree)
     if (self.x + LEFT_GAP) <= (tree.x + tree.width) and (self.x + BIRD_WIDTH - RIGHT_BOTTOM_GAP) >= (tree.x) and
         (self.y + TOP_GAP) <= (tree.y + tree.height) and (self.y + BIRD_HEIGHT - RIGHT_BOTTOM_GAP) >= (tree.y) then

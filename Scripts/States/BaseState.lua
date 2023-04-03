@@ -1,3 +1,4 @@
+-- A superclass with empty abstract methods for all the game states to polymorphically implement them as needed
 BaseState = Class{}
 
 function BaseState:init() end

@@ -1,7 +1,9 @@
+-- The state entered after the player loses - Game enters the countdown state if enter is pressed
 ScoreState = Class {
     __includes = BaseState
 }
 
+-- Gets a refference to the player's score in order to show it
 function ScoreState:enter(params)
     self.score = params.score
 end

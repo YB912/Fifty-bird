@@ -1,12 +1,13 @@
+-- A state where the game counts down from 3 before proceeding to the play state
 CountdownState = Class {
     __includes = BaseState
 }
 
-COUNTDOWN_TIME = 1
+COUNTDOWN_TIME = 1 -- Length of each count in seconds
 
 function CountdownState:init()
-    self.count = 3
-    self.timer = 0
+    self.count = 3 -- The number to begin counting down from
+    self.timer = 0 -- A constantly increasing variable which triggers a count every time it reaches the COUNTDOWN_TIME
 end
 
 function CountdownState:enter()

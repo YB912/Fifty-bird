@@ -1,3 +1,4 @@
+-- The state the game starts with - Prints the game's name and prompts the player to press enter to change to the countdown state
 TitleScreenState = Class{__includes = BaseState}
 
 function TitleScreenState:update(dt)
