@@ -59,7 +59,7 @@ function PlayState:update(dt)
     end
 
     -- Enter score state if the player falls below the screen
-    if self.bird.y + BIRD_HEIGHT >= VIRTUAL_HEIGH then
+    if self.bird.y + BIRD_HEIGHT >= VIRTUAL_HEIGHT then
         gStateMachine:change('score', {
             score = self.score
         })
